@@ -7,7 +7,7 @@ function love.load(arg)
   
   tempo = true
   
-  tamanho = 16
+  tamanho = 20
   
   katakana = love.graphics.newFont("msgothic.ttc", tamanho)
   
