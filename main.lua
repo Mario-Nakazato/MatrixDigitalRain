@@ -7,7 +7,7 @@ function love.load(arg)
   
   tempo = true
   
-  tamanho = 20
+  tamanho = 16
   
   katakana = love.graphics.newFont("msgothic.ttc", tamanho)
   
@@ -22,6 +22,8 @@ function love.load(arg)
     sims = matrix.simbolos()
     sims:gerar(x)
     table.insert(tsims, sims)
+    
+    print(sims.atributo)
     
     x = x +tamanho
     

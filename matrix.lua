@@ -2,7 +2,8 @@ utf8 = require "utf8"
 
 local function simbolo(x, y, velocidade, primeiro, brilho) -- Construtor
   
-  local obj = {
+  local atributos = {
+    
     x = x,
     y = y,
     valor,
@@ -11,46 +12,49 @@ local function simbolo(x, y, velocidade, primeiro, brilho) -- Construtor
     tempo = 0,
     primeiro = primeiro,
     brilho = brilho
+    
   }
   
-  function obj:setSimboloAleatorio()
+  local metodos = {}
+  
+  function metodos:setSimboloAleatorio()
     
     if math.random() < 0.16 then
-      self.valor = math.random(0, 9)
+      atributos.valor = math.random(0, 9)
     else
-      self.valor = utf8.char(12448 +math.random(0, 96))
+      atributos.valor = utf8.char(12448 +math.random(0, 96))
     end
     
   end
   
-  function obj:desenhar()
+  function metodos:desenhar()
     
-    if self.primeiro or self.brilho then
+    if atributos.primeiro or atributos.brilho then
       love.graphics.setColor(love.math.colorFromBytes(180, 255, 180))
     else
       love.graphics.setColor(love.math.colorFromBytes(0, 255, 70))
     end
-    love.graphics.print(self.valor, self.x, self.y)
+    love.graphics.print(atributos.valor, atributos.x, atributos.y)
     
   end
   
-  function obj:chuva(dt)
+  function metodos:chuva(dt)
     
-    if self.y > lt then
-      self.y = -tamanho +self.velocidade *dt
+    if atributos.y > lt then
+      atributos.y = -tamanho +atributos.velocidade *dt
     else
-      self.y = self.y +self.velocidade *dt
+      atributos.y = atributos.y +atributos.velocidade *dt
     end
     
-    self.tempo = self.tempo +dt
-    if self.intervalo <= self.tempo then
-      self.tempo = 0
+    atributos.tempo = atributos.tempo +dt
+    if atributos.intervalo <= atributos.tempo then
+      atributos.tempo = 0
       self:setSimboloAleatorio()
     end
     
   end
   
-  return obj
+  return metodos
 
 end
 
@@ -106,7 +110,6 @@ end
 
 matrix = {
   
-  simbolo = simbolo,
   simbolos = simbolos,
   
 }
