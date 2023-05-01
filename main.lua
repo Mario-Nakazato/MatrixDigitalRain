@@ -6,6 +6,7 @@ function love.load(arg)
   if arg[#arg] == "-debug" then require("mobdebug").start() end -- ZeroBrane Studio para Debug
   
   tempo = true
+  timer = 0
   
   tamanho = 16
   
@@ -24,6 +25,7 @@ function love.load(arg)
     table.insert(tsims, sims)
     
     print(sims.atributo)
+    print(love.getVersion())
     
     x = x +tamanho
     
@@ -35,6 +37,12 @@ function love.update(dt)
   
   if not tempo then
     return
+  end
+  
+  timer = timer +dt
+  
+  if timer > 32 then
+    love.load(arg)
   end
   
   for c, v in pairs(tsims) do
@@ -62,6 +70,8 @@ function love.keypressed(tecla, cod, repeticao)
     
     tempo = not tempo
     
+  elseif tecla == "f3" then
+    love.window.minimize()
   end
   
 end
