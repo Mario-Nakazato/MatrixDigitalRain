@@ -1,226 +1,120 @@
-require "matrix"
+require "/src/matrix"
 utf8 = require "utf8"
 
-function love.load(arg)
-  
-  if arg[#arg] == "-debug" then require("mobdebug").start() end -- ZeroBrane Studio para Debug
-  
-  tempo = true
-  timer = 0
-  
-  tamanho = 16
-  
-  katakana = love.graphics.newFont("msgothic.ttc", tamanho)
-  
-  ct, lt = love.graphics.getDimensions()
-  
-  tsims = {}
-  
-  x = 0
-  
-  for i = 1, math.floor(ct /tamanho) do
-  
-    sims = matrix.simbolos()
-    sims:gerar(x)
-    table.insert(tsims, sims)
+function love.load(arg, unfilteredArg)
+    if arg[#arg] == "-debug" then require("mobdebug").start() end -- ZeroBrane Studio para Debug
+
+    tempo = true
     
-    print(sims.atributo)
-    print(love.getVersion())
-    
-    x = x +tamanho
-    
-  end
-  
+    katakana = love.graphics.newFont("/src/msgothic.ttc", tamanho)
+    love.graphics.setFont(katakana)
+
+    ct, lt = love.graphics.getDimensions()
+    tamanho = 16
+
+    sims = matrix.instanciar(ct, lt, tamanho)
 end
 
 function love.update(dt)
-  
-  if not tempo then
-    return
-  end
-  
-  timer = timer +dt
-  
-  if timer > 32 then
-    love.load(arg)
-  end
-  
-  for c, v in pairs(tsims) do
-    v:chuva(dt)
-  end
-  
+    if not tempo then
+        return
+    end
+
+    sims:update(dt)
 end
 
 function love.draw()
-  
-  love.graphics.setFont(katakana)
-  for c, v in pairs(tsims) do
-    v:desenhar()
-  end
-  
+    sims:draw()
 end
 
-function love.keypressed(tecla, cod, repeticao)
-  
-  if tecla == "f5" then
-  
-    love.load({})
-  
-  elseif tecla == "f1" then
-    
-    tempo = not tempo
-    
-  elseif tecla == "f3" then
-    love.window.minimize()
-  end
-  
+function love.keypressed(key, scancode, isrepeat)
+    if key == "f5" then
+        --love.load({})
+        ct, lt = love.graphics.getDimensions()
+        sims = matrix.instanciar(ct, lt, tamanho)
+    elseif key == "f1" then
+        tempo = not tempo
+    elseif key == "f3" then
+        love.window.minimize()
+    end
 end
 
-function love.keyreleased(tecla, cod)
-  
-  
-  
+--[[
+function love.keyreleased(key, scancode)
 end
 
-function love.mousepressed(x, y, botao, toque, repeticao)
-  
-  
-  
+function love.mousepressed(x, y, button, istouch, presses)
 end
 
-function love.mousereleased(x, y, botao, toque, repeticao)
-  
-  
-  
+function love.mousereleased(x, y, button, istouch, presses)
 end
 
-function love.mousemoved(x, y, dx, dy, toque)
-  
-  
-  
+function love.mousemoved(x, y, dx, dy, istouch)
 end
 
 function love.wheelmoved(x, y)
-  
-  
-  
 end
 
-function love.mousefocus(foco)
-  
-  
-  
+function love.mousefocus(focus)
 end
 
-function love.resize(c, l)
-  
-  
-  
+function love.resize(w, h)
 end
 
-function love.focus(foco)
-  
-  
-  
+function love.focus(focus)
 end
 
 function love.quit()
-  
-  
-  
-end
---[[
-function inicioContato(a, b, contato) 
-  
-  
-  
 end
 
-function fimContato(a, b, contato)
-  
-  
-  
+function love.touchpressed(id, x, y, dx, dy, pressure)
 end
 
-function preContato(a, b, contato)
-  
-  
-  
+function love.touchreleased(id, x, y, dx, dy, pressure)
 end
 
---function posContato(a, b, contato, normalImpulso, tangenteImpulso, normalImpulso1, tangenteImpulso1)
-function posContato(a, b, contato, normalImpulso, tangenteImpulso)
-  
-  
-  
+function love.touchmoved(id, x, y, dx, dy, pressure)
 end
 
-function love.touchpressed(id, x, y, dx, dy, pressao)
-  
-  
-  
+function love.displayrotated(index, orientation)
 end
 
-function love.touchreleased(id, x, y, dx, dy, pressao)
-  
-  
-  
+function love.textedited(text, start, length)
 end
 
-function love.touchmoved(id, x, y, dx, dy, pressao)
-  
-  
-  
+function love.textinput(text)
 end
 
-function love.displayrotated(indice, orientacao)
-  
-  
-  
+function love.directorydropped(path)
 end
 
-function love.textedited(texto, inicio, tamanho)
-  
-  
-  
+function love.filedropped(file)
 end
 
-function love.textinput(texto)
-  
-  
-  
-end
-
-function love.directorydropped(caminho)
-  
-  
-  
-end
-
-function love.filedropped(arquivo)
-  
-  
-  
-end
-
-function love.errorhandler(erro)
-  
-  
-  
+function love.errorhandler(msg)
 end
 
 function love.lowmemory()
-  
-  
-  
 end
 
-function love.threaderror(thread, erro)
-  
-  
-  
+function love.threaderror(thread, errorstr)
 end
 
-function love.visible(visivel)-- Esta funcao CallBack não funciona, utilize visivel = love.window.isMinimized()
+function love.visible(visible)-- Esta funcao CallBack não funciona, utilize visivel = love.window.isMinimized()
 end
+
+--love.physics world callbacks
+function beginContact(a, b, coll)
+end
+
+function endContact(a, b, coll)
+end
+
+function preSolve(a, b, coll)
+end
+
+--postSolve(fixture1, fixture2, contact, normal_impulse1, tangent_impulse1, normal_impulse2, tangent_impulse2)
+function postSolve(a, b, coll, normalimpulse, tangentimpulse)
+end
+--love.physics world callbacks
 --]]
